@@ -1,0 +1,13 @@
+﻿@page
+@model eshop.Pages.OrderRedirect.SuccessModel
+
+@{
+    ViewData["Title"] = "Success";
+}
+
+@if (Model.order != null)
+{
+<a>The order was made.</a>
+<a>Order ID: @Model.order.Id</a>
+}
+

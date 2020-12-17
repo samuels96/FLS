@@ -1,0 +1,76 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>FLS Computers</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="~/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="~/css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="~/css/elegant-icons.css" type="text/css">
+    <link rel="stylesheet" href="~/css/nice-select.css" type="text/css">
+    <link rel="stylesheet" href="~/css/jquery-ui.min.css" type="text/css">
+    <link rel="stylesheet" href="~/css/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="~/css/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" href="~/css/style.css" type="text/css">
+</head>
+
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="header__logo">
+                        <a href="./index.html"><img src="~/img/logo.png" alt=""></a>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <nav class="header__menu">
+                        <ul>
+                            <li class="active">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
+                            </li>
+                            <li>
+                                <a class="products-catalogue" asp-area="" asp-page="/Catalogue">Products</a>
+                            </li>
+                                @if (!User.Identity.IsAuthenticated)
+                                {
+                                    <li>
+                                    <a class="account-register" asp-area="" asp-page="/Account/Register">Register</a>
+                                    </li>
+                                    <li>
+                                    <a class="account-login" asp-area="" asp-page="/Account/Login">Login</a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li><a class="account-logout" asp-area="" asp-page="/Account/Logout">Logout</a></li>
+                                }
+                            <li>
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Basket">
+                                    Basket
+                                    <img src="~/img/basket.png"/>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            <div class="humberger__open">
+                <i class="fa fa-bars"></i>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    @RenderSection("Scripts", required: false)
+    </body>
+</html>

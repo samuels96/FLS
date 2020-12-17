@@ -1,0 +1,141 @@
+﻿@page
+@model eshop.Pages.Catalogue.Products
+<!-- pager parameter controls -->
+<
+<section class="hero">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="hero__categories">
+                    <div class="hero__categories__all">
+                        <span>Categories</span>
+                    </div>
+                    <ul>
+                        @foreach (string Category in @Model.CategoryNameList)
+                        {
+                            <li><a href="" onclick="OnCategoryClick('@Category')">@Category</a></li>
+                        }
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-9">
+                <div class="hero__search">
+                    <div class="hero__search__form">
+                        <form action="#">
+                            <input type="text" placeholder="What do yo u need?">
+                            <button type="submit" class="site-btn">SEARCH</button>
+                        </form>
+                    </div>
+                </div>
+                <div name="products_content">
+                    <form method="post" class="container border text-left pt-2 mb-3">
+                        <div class="form-row form-group">
+                            <div class="col">
+                                <label asp-for="PageSize">Items per page</label>
+                                <select asp-for="PageSize" asp-items="Model.PageSizeList" class="form-control form-control-sm" onchange="this.form.submit()"></select>
+                            </div>
+                        </div>
+                        <div class="form-row form-group">
+                            <div class="col">
+                                <label asp-for="BrandName">Brand</label>
+                                <select asp-for="BrandName" asp-items=Model.BrandNameList class="form-control form-control-sm" onchange="this.form.submit()"></select>
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- items being paged -->
+                    <table class="table table-sm table-striped table-bordered">
+                        @foreach (var product in @Model.ProductsCatalogue)
+                        {
+                            <div class="product-element">
+                                <tr>
+                                    <td>@product.Name</td>
+                                    <td>@product.BrandName</td>
+                                    <td>@product.Price</td>
+                                    <td>
+                                        <a href="#" onclick="AddToBasket(@product.ProductID)">Add To Basket</a>
+                                </tr>
+                            </div>
+                        }
+                    </table>
+
+                    <!-- pager -->
+                    @if (Model.Pager.Pages.Any())
+                    {
+                        <nav class="table-responsive">
+                            <ul class="pagination justify-content-center d-flex flex-wrap">
+                                @if (Model.Pager.CurrentPage > 1)
+                                {
+                                    <li class="page-item">
+                                        <a class="page-link" href="/">First</a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="/?p=@(Model.Pager.CurrentPage - 1)">Previous</a>
+                                    </li>
+                                }
+
+                                @foreach (var p in Model.Pager.Pages)
+                                {
+                                    <li class="page-item @(p == Model.Pager.CurrentPage ? "active" : "")">
+                                        <a class="page-link" href="/Catalogue?p=@p">@p</a>
+                                    </li>
+                                }
+
+                                @if (Model.Pager.CurrentPage < Model.Pager.TotalPages)
+                                {
+                                    <li class="page-item">
+                                        <a class="page-link" href="/Catalogue?p=@(Model.Pager.CurrentPage + 1)">Next</a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="/Catalogue?p=@(Model.Pager.TotalPages)">Last</a>
+                                    </li>
+                                }
+                            </ul>
+                        </nav>
+                    }
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+@Html.AntiForgeryToken()
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+    function AddToBasket(productID) {
+        $.ajax({
+            type: 'POST',
+            url: '/Basket?handler=AddToBasket',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("XSRF-TOKEN",
+                    $('input:hidden[name="__RequestVerificationToken"]').val());
+            },
+            data: { "productID": productID },
+            success: function(){
+                alert("Product added to basket");
+            }
+        });
+    }
+
+    function OnCategoryClick(category) {
+        $.ajax({
+            type: "POST",
+            url: "?handler=SelectedCategoryName",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("XSRF-TOKEN",
+                    $('input:hidden[name="__RequestVerificationToken"]').val());
+            },
+            data: { "categoryName": category },
+        });
+
+    }
+
+    $(".hero__categories").on('click', 'li', function (e) {
+        $(this).parent().find('li.active').removeClass('active');
+        $(this).addClass('active');
+
+        var start = new Date().getTime();
+        while (new Date().getTime() < start + 100);
+    });
+</script>

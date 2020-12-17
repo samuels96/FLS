@@ -1,0 +1,52 @@
+﻿@page
+@model eshop.Pages.BasketModel
+@{
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Cart</title>
+</head>
+<body>
+
+    <h3>Basket</h3>
+    <form method="post" asp-page="basket" asp-page-handler="Update">
+
+        <table class="table table-sm table-striped table-bordered " border="1">
+            <tr>
+                <th>Action</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Quantity <input type="submit" value="Update" /></th>
+                <th>Sub Total</th>
+            </tr>
+            @foreach (var item in Model.Basket.BasketProduct)
+            {
+                <tr align="center">
+                    <td align="center">
+                        <a asp-page="basket" asp-page-handler="Delete" asp-route-productID="@item.Product.Id">Delete</a>
+                    </td>
+                    <td>@item.Product.Name</td>
+                    <td>$@item.Product.Price</td>
+                    <td><input type="number" name="quantities" value="@item.Quantity" min="1" style="width: 50px;" /></td>
+                    <td>
+                        $@(item.Product.Price * item.Quantity)
+                    </td>
+                </tr>
+            }
+            <tr>
+                <td colspan="4" align="right">Total</td>
+                <td align="center">$@Model.Total</td>
+            </tr>
+        </table>
+    </form>
+
+    @if(Model.Basket.BasketProduct.Count() >= 1){
+        <a asp-page="basket" asp-page-handler="Order" class="orderButton">Make Order</a>
+    }
+
+</body>
+</html>
