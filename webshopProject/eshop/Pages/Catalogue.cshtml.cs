@@ -70,8 +70,8 @@ namespace eshop.Pages.Catalogue
 
             if (SelectedCategoryName != "Any")
             {
-				string sqlBrand = "CALL get_products_by_brand_name({0});";
-				string sqlCat = "CALL get_products_by_category({0});";
+		string sqlBrand = "CALL get_products_by_brand_name({0});";
+		string sqlCat = "CALL get_products_by_category({0});";
 				
                 if (BrandName != "Any")
                 {
