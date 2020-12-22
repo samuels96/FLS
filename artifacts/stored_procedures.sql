@@ -58,3 +58,27 @@ BEGIN
     DELETE FROM order_basket ob
     WHERE ob.orderID = orderID;
 END;
+                    
+CREATE
+    DEFINER = admin@`%` PROCEDURE create_customer(IN fName VARCHAR(50), IN lName VARCHAR(50), IN email VARCHAR(50),
+                                                  IN address VARCHAR(50))
+BEGIN
+	INSERT INTO ESHOP.customer (FirstName, LastName, Email, Phone, Address)
+	VALUES ('@fName','@lName','@email','@address');
+END;
+                                                                    
+CREATE
+    DEFINER = admin@`%` PROCEDURE delete_product(IN id1 INT)
+BEGIN
+	DELETE FROM ESHOP.product a
+    WHERE a.ID = id1;
+END;
+
+CREATE
+    DEFINER = admin@`%` PROCEDURE login_verification(IN email1 VARCHAR(16))
+BEGIN
+	SELECT email, password FROM ESHOP.admins a
+    WHERE a.email = email1;
+    
+END;
+
